@@ -1,50 +1,61 @@
-const _bem = (prefixedName, blockSuffix, element, modifier) => {
+function _bem(
+  prefixName: string,
+  blockSuffix: string,
+  element: string,
+  modifier: string
+) {
   if (blockSuffix) {
-    prefixedName += `-${blockSuffix}`;
+    prefixName += `-${blockSuffix}`;
   }
   if (element) {
-    prefixedName += `__${element}`;
+    prefixName += `__${element}`;
   }
   if (modifier) {
-    prefixedName += `--${modifier}`;
+    prefixName += `--${modifier}`;
   }
-  return prefixedName;
-};
-function createBEM(prefixedName: string) {
-  const b = (blockSuffix = "") => _bem(prefixedName, blockSuffix, "", "");
-  const e = (element = "") =>
-    element ? _bem(prefixedName, "", element, "") : "";
-  const m = (modifier = "") =>
-    modifier ? _bem(prefixedName, "", "", modifier) : "";
-  const be = (blockSuffix = "", element = "") =>
-    blockSuffix && element ? _bem(prefixedName, blockSuffix, element, "") : "";
-  const em = (element, modifier) =>
-    element && modifier ? _bem(prefixedName, "", element, modifier) : "";
-  const bm = (blockSuffix, modifier) =>
-    blockSuffix && modifier
-      ? _bem(prefixedName, blockSuffix, "", modifier)
-      : "";
-  const bem = (blockSuffix, element, modifier) =>
+  return prefixName;
+}
+
+function createBEM(prefixName: string) {
+  const b = (blockSuffix: string = "") => _bem(prefixName, blockSuffix, "", "");
+  const e = (element: string = "") =>
+    element ? _bem(prefixName, "", element, "") : "";
+  const m = (modifier: string = "") =>
+    modifier ? _bem(prefixName, "", "", modifier) : "";
+
+  const be = (blockSuffix: string = "", element: string = "") =>
+    blockSuffix && element ? _bem(prefixName, blockSuffix, element, "") : "";
+  const bm = (blockSuffix: string = "", modifier: string = "") =>
+    blockSuffix && modifier ? _bem(prefixName, blockSuffix, "", modifier) : "";
+  const em = (element: string = "", modifier: string = "") =>
+    element && modifier ? _bem(prefixName, "", element, modifier) : "";
+  const bem = (
+    blockSuffix: string = "",
+    element: string = "",
+    modifier: string = ""
+  ) =>
     blockSuffix && element && modifier
-      ? _bem(prefixedName, blockSuffix, element, modifier)
+      ? _bem(prefixName, blockSuffix, element, modifier)
       : "";
-  const is = (name, state) => (state ? `is-${name}` : "");
+
+  const is = (name: string, state: string | boolean) =>
+    state ? `is-${name}` : "";
   return {
     b,
     e,
     m,
     be,
-    em,
     bm,
+    em,
     bem,
     is,
   };
 }
+
 export function createNamespace(name: string) {
-  const prefixedName = `t-${name}`;
-  return createBEM(prefixedName);
+  const prefixName = `t-${name}`;
+  return createBEM(prefixName);
 }
-const bem = createNamespace("button");
 
 /*
 console.log(bem.b());
